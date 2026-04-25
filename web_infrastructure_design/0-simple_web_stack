@@ -1,0 +1,18 @@
+https://imgur.com/a/cWeG5yN
+
+## 0. Simple web stack infrastructure description
+
+This infrastructure consists of a single server hosting a website accessible via www.foobar.com.
+
+### Components logic:
+- The user accesses the website by typing the domain name in the browser.
+- DNS translates the domain name www.foobar.com (A record) to the server IP 8.8.8.8.
+- The Web Server (Nginx) receives the HTTP request and communicates with the Application Server.
+- The Application Server executes the code logic from the Application Files.
+- The Database (MySQL) stores and provides the necessary data.
+- Communication between the client and server happens via HTTP over TCP/IP.
+
+### Issues:
+- SPOF: If the server fails, the entire stack is down.
+- Maintenance: Deployments or restarts cause downtime.
+- Scaling: Single server resources are limited and cannot handle high traffic spikes.
