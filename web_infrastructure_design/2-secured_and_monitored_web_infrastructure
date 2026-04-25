@@ -1,0 +1,23 @@
+https://imgur.com/a/EDTbJUV
+
+## 2. Secured and monitored web infrastructure
+
+### Description
+This infrastructure is a secured and monitored version of the distributed web stack. It ensures data encryption via SSL, protects servers with firewalls, and tracks system health with monitoring tools.
+
+### Why additional elements were added:
+* **Firewalls (x3)**: Added to protect each server by filtering incoming and outgoing traffic based on security rules.
+* **SSL Certificate (HTTPS)**: Added to encrypt the communication between the user and the server, ensuring privacy and data integrity.
+* **Monitoring Clients (x3)**: Added to collect system metrics and logs to ensure the infrastructure is performing correctly and to alert in case of failure.
+
+### Infrastructure Specifics:
+* **Firewalls**: They act as a security barrier, allowing only specific ports (like 80, 443, 22) and blocking unauthorized access.
+* **HTTPS**: Serving traffic over HTTPS ensures that data (like passwords) cannot be intercepted or read by hackers during transmission.
+* **Monitoring**: Used for real-time visibility into the infrastructure's performance (CPU usage, RAM, uptime).
+* **How data is collected**: The monitoring agent (client) installed on each server gathers local metrics and pushes them to a central dashboard (like Sumologic or Prometheus).
+* **Monitoring QPS (Queries Per Second)**: To monitor web server QPS, you would configure the web server (Nginx) to log every request and use the monitoring tool to parse these logs and count the number of requests per second.
+
+### Issues with this Infrastructure:
+* **Terminating SSL at the Load Balancer**: While it simplifies management, the traffic between the Load Balancer and the web servers is unencrypted (plain HTTP), which could be a security risk in a compromised internal network.
+* **One MySQL Write Server**: Having only one Primary node for writes is a SPOF for data modification. If it fails, the application cannot save any new data.
+* **Servers with identical components**: Running the web server, app server, and database on the same machine means they compete for the same resources (CPU/RAM). A spike in database load can crash the web server.
