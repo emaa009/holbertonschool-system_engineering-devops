@@ -1,0 +1,24 @@
+https://imgur.com/a/NxeY81E
+
+## 1. Distributed web infrastructure
+
+### Description
+This infrastructure expands the simple stack into a distributed one by adding a load balancer and a second server to provide redundancy and better traffic management.
+
+### Why additional elements were added:
+* **Load Balancer (HAproxy)**: Added to distribute incoming traffic across multiple servers, preventing any single server from becoming a bottleneck.
+* **Second Server**: Added to provide redundancy. If one server fails, the other can still serve the website.
+
+### Infrastructure Specifics:
+* **Load Balancer Algorithm**: Configured with **Round Robin**. This algorithm works by sending each new request to the next server in the list in a rotating order (Server 1, then Server 2, then back to Server 1).
+* **Setup Type**: This is an **Active-Active** setup. 
+    * **Active-Active**: Both servers are actively receiving and processing traffic at the same time.
+    * **Active-Passive**: Only one server is active, while the other stays on standby, only taking over if the primary one fails.
+* **Database Primary-Replica (Master-Slave) Cluster**:
+    * The **Primary (Master)** node is the only one that handles **Write** operations (inserting/updating data).
+    * The **Replica (Slave)** node synchronizes with the Primary and handles **Read** operations. This reduces the load on the Primary node.
+
+### Issues with this Infrastructure:
+* **SPOF (Single Point of Failure)**: The Load Balancer itself is now a SPOF. If HAproxy fails, the entire site is inaccessible, even if the web servers are fine. The Primary database is also a SPOF for write operations.
+* **Security Issues**: There is no **Firewall** to block unauthorized traffic and no **HTTPS** (SSL certificate), meaning data is transmitted in plain text.
+* **No Monitoring**: We have no way of knowing the health of the servers or being alerted if one of them crashes.
