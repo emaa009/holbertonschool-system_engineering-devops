@@ -1,0 +1,22 @@
+https://imgur.com/a/ZYYiY9u
+
+## 3. Scale up infrastructure
+
+### Description
+This infrastructure represents a fully scaled and decoupled architecture. Each component (Web Server, Application Server, and Database) is hosted on its own dedicated server to maximize performance and high availability.
+
+### Why additional elements were added:
+* **Additional Server (Decoupling)**: Components were split into their own servers to ensure they don't compete for resources (CPU/RAM). If the database is under heavy load, it won't slow down the web server.
+* **Load Balancer Cluster (HAproxy Cluster)**: A second load balancer was added to create a cluster. This removes the Single Point of Failure (SPOF). If one load balancer fails, the second one takes over immediately using a floating IP or Heartbeat mechanism.
+* **Redundancy across all tiers**: By having at least two servers for every layer (Web, App, DB), we ensure the website stays online even if multiple individual servers fail.
+
+### Infrastructure Specifics:
+* **Separation of Concerns**: Each server has a single responsibility. This makes the system easier to manage, monitor, and scale independently.
+* **High Availability**: The clustered load balancers ensure that the entry point of the infrastructure is always accessible.
+* **Scalability**: Because each layer is independent, we can add more web servers or more application servers specifically where the bottleneck occurs.
+
+### Final Architecture Overview:
+1. **User** -> **DNS** -> **LB Cluster (HAproxy)**
+2. **LB Cluster** -> **Web Servers (Nginx)**
+3. **Web Servers** -> **Application Servers**
+4. **Application Servers** -> **Database Cluster (Primary/Replica)**
